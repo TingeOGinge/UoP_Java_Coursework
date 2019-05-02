@@ -10,15 +10,6 @@ import java.awt.CardLayout;
 import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
-
-/**
- *TODO: 
-   *[x] finish edit functionality (sauce and toppings left)
-   *[x] add confirmation of edit 
-   *[] revise code 
-   *   [x] Look into a method that returns array list of enum options for improved examination, potentially with for loops 
-   *      [x] first version is working but potential mismatch on obj/str type needs solving
- */
   
 
 public class HomeOrderForm extends javax.swing.JFrame {
@@ -547,7 +538,7 @@ editTopping2Combo.addItemListener(new java.awt.event.ItemListener() {
   private void editDeleteAction(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editDeleteAction
     if (currentOrder.getSize() > 0){      
       cl.show(cardLayoutPanel, "EditDeletePanel");
-      editPizza = new Pizza(currentPizza);
+      editPizza = new Pizza(currentOrder.getPizza(1));
       updateEditDeleteDisplay();
       updateEditDeleteCombos();
     }
@@ -565,13 +556,13 @@ editTopping2Combo.addItemListener(new java.awt.event.ItemListener() {
     updateEditSizeCombo();
     updateEditCrustCombo();
     updateEditSauceCombo();
-    updateToppingCombo(editTopping1Combo, currentPizza.getTopping1());
-    updateToppingCombo(editTopping2Combo, currentPizza.getTopping2());
+    updateToppingCombo(editTopping1Combo, editPizza.getTopping1());
+    updateToppingCombo(editTopping2Combo, editPizza.getTopping2());
   }
   
   private void updateEditSizeCombo(){
     String currentSize = 
-            currentPizza.getBaseSize().getDescription().substring(0, 1);
+            editPizza.getBaseSize().getDescription().substring(0, 1);
     for (int i = 0; i < editSizeCombo.getItemCount(); i++){
       String editSizeOption = String.valueOf(editSizeCombo.getItemAt(i));
       if (editSizeOption.substring(0, 1).equals(currentSize)){
@@ -583,7 +574,7 @@ editTopping2Combo.addItemListener(new java.awt.event.ItemListener() {
   
   private void updateEditCrustCombo(){
     String currentCrust = 
-            currentPizza.getBaseCrust().getDescription().substring(0, 1);
+            editPizza.getBaseCrust().getDescription().substring(0, 1);
     for (int i = 0; i < editCrustCombo.getItemCount(); i++){
       String editCrustOption = String.valueOf(editCrustCombo.getItemAt(i));
       if (editCrustOption.substring(0, 1).equals(currentCrust)){
@@ -595,7 +586,7 @@ editTopping2Combo.addItemListener(new java.awt.event.ItemListener() {
   
   private void updateEditSauceCombo(){
     String currentSauce = 
-            currentPizza.getPizzaSauce().getDescription().substring(0, 1);
+            editPizza.getPizzaSauce().getDescription().substring(0, 1);
     for (int i = 0; i < editSauceCombo.getItemCount(); i++){
       String editSauceOption = String.valueOf(editSauceCombo.getItemAt(i));
       if (editSauceOption.substring(0, 1).equals(currentSauce)){
@@ -626,8 +617,8 @@ editTopping2Combo.addItemListener(new java.awt.event.ItemListener() {
   private void pizzaNumberComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_pizzaNumberComboItemStateChanged
     if (evt.getStateChange() == ItemEvent.SELECTED){
       Integer index = (Integer)pizzaNumberCombo.getSelectedItem();
-      currentPizza = currentOrder.getPizza(index);
-      editDeleteTextArea.setText(currentPizza.getInfo());
+      editPizza = new Pizza(currentOrder.getPizza(index));
+      editDeleteTextArea.setText(editPizza.getInfo());
       updateEditDeleteCombos();
     }    
   }//GEN-LAST:event_pizzaNumberComboItemStateChanged
